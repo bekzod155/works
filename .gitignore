@@ -1,0 +1,11 @@
+# General exclusions (apply to the entire project)
+.DS_Store
+*.log
+
+# Environment files (specific to client and server)
+client/.env
+server/.env
+
+# Ensure node_modules are ignored in both directories (redundant but safe)
+client/node_modules/
+server/node_modules/

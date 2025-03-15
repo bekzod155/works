@@ -1,0 +1,6 @@
+-- database: ./db.sqlite3
+
+SELECT * FROM notices
+ORDER BY `id` DESC;
+ALTER TABLE notices ADD COLUMN location TEXT NOT NULL DEFAULT '';
+ALTER TABLE notices ADD COLUMN jobType TEXT NOT NULL DEFAULT '';
