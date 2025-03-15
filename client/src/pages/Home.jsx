@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { ReactTyped } from "react-typed";
-const baseURL = 'https://works-008fff257c2f.herokuapp.com';
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 const Home = () => {
   const homeContRef = useRef(null);
@@ -102,10 +102,10 @@ const Home = () => {
 
   <div className="mt-3 d-flex flex-wrap justify-content-center align-items-center" style={{ position: 'relative', zIndex: 1 }}>
     <a id="btn" href="/auth" className="btn fs-4 m-2">
-      E'lon joylash
+      Sotuvchi
     </a>
     <a id="btn" href="/worker" className="btn fs-4 m-2">
-      E'lonlarni ko'rish
+      Sotib oluvchi
     </a>
   </div>
 </div>
