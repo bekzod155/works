@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { ReactTyped } from "react-typed";
-const baseURL = process.env.REACT_APP_BASE_URL;
+const baseURL = 'https://works-008fff257c2f.herokuapp.com';
 
 const Home = () => {
   const homeContRef = useRef(null);

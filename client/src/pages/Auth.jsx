@@ -2,7 +2,7 @@ import { Route, Routes, Link, useLocation, useNavigate } from "react-router-dom"
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-const baseURL = process.env.REACT_APP_BASE_URL;
+const baseURL = 'https://works-008fff257c2f.herokuapp.com';
 console.log(baseURL);
 
 const Auth = () => {

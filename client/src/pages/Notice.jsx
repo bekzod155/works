@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import { useNavigate } from 'react-router-dom';
-const baseURL = process.env.REACT_APP_BASE_URL;
+const baseURL = 'https://works-008fff257c2f.herokuapp.com';
 
 // Notice Component with Toast
 const Notice = ({ fetchNotices }) => {
