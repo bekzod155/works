@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 const baseURL = process.env.REACT_APP_BASE_URL;
-console.log(baseURL);
 const LoginAdmin = () => {
   const [login, setlogin] = useState("");
   const [password, setPassword] = useState("");

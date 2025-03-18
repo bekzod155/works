@@ -14,6 +14,7 @@ const Workers = () => {
       const response = await fetch(`${baseURL}/worker`);
       if (!response.ok) throw new Error('Failed to fetch workers');
       const data = await response.json();
+      
       setWorkers(data);
       setLoading(false);
     } catch (err) {

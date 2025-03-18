@@ -4,3 +4,6 @@ SELECT * FROM notices
 ORDER BY `id` DESC;
 ALTER TABLE notices ADD COLUMN location TEXT NOT NULL DEFAULT '';
 ALTER TABLE notices ADD COLUMN jobType TEXT NOT NULL DEFAULT '';
+ALTER TABLE notice_images ADD COLUMN mime_type TEXT;
+
+UPDATE notice_images SET mime_type = 'image/jpeg' WHERE mime_type IS NULL;

@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import path from 'path';
 import multer from 'multer';
+import { log } from 'console';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -315,7 +316,6 @@ app.post('/admin', async (req, res) => {
     res.status(500).json({ error: 'Server error', details: error.message });
   }
 });
-
 // Admin Routes with Authentication
 app.get('/admin/allnotices', adminauthenticateToken, async (req, res) => {
   try {
@@ -329,19 +329,44 @@ app.get('/admin/allnotices', adminauthenticateToken, async (req, res) => {
        ORDER BY n.created_at DESC`
     );
 
-    // Fetch images for each notice
     for (const notice of notices) {
       const images = await db.all(
-        'SELECT image FROM notice_images WHERE notice_id = ?',
+        'SELECT id, image FROM notice_images WHERE notice_id = ?',
         [notice.id]
       );
-      // Convert BLOBs to base64 strings
-      notice.images = images.map(img => `data:image/jpeg;base64,${Buffer.from(img.image).toString('base64')}`);
+      notice.images = images.map(img => ({
+        id: img.id,
+        data: `data:image/jpeg;base64,${Buffer.from(img.image).toString('base64')}`
+      }));
     }
-
+    
     res.json(notices);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch notices', details: error.message });
+  }
+});
+// Delete Image by ID (Admin Only)
+app.delete('/admin/notice/image/:id', adminauthenticateToken, async (req, res) => {
+  const imageId = req.params.id;
+
+  try {
+    const db = await connectDB();
+    // Check if the image exists
+    const image = await db.get('SELECT id FROM notice_images WHERE id = ?', [imageId]);
+    if (!image) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+
+    // Delete the image
+    const result = await db.run('DELETE FROM notice_images WHERE id = ?', [imageId]);
+
+    if (result.changes === 0) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+
+    res.status(200).json({ message: 'Image deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete image', details: error.message });
   }
 });
 
@@ -360,11 +385,13 @@ app.get('/admin/inprogress', adminauthenticateToken, async (req, res) => {
     // Fetch images for each notice
     for (const notice of notices) {
       const images = await db.all(
-        'SELECT image FROM notice_images WHERE notice_id = ?',
+        'SELECT id, image FROM notice_images WHERE notice_id = ?',
         [notice.id]
       );
-      // Convert BLOBs to base64 strings
-      notice.images = images.map(img => `data:image/jpeg;base64,${Buffer.from(img.image).toString('base64')}`);
+      notice.images = images.map(img => ({
+        id: img.id,
+        data: `data:image/jpeg;base64,${Buffer.from(img.image).toString('base64')}`
+      }));
     }
 
     res.json(notices);
@@ -437,10 +464,9 @@ app.put('/admin/notice/:id', adminauthenticateToken, async (req, res) => {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
-
-  if (!['Qurilish', 'Online', 'Dala ishlari', 'Tozalash', 'Yuk tashish'].includes(jobType)) {
+  if (!['Tikuvchilik', 'Duradgorlik', 'To`quvchilik', 'Taqinchoqlar', 'Haykaltaroshlik', 'Rassomlik', 'Boshqalar'].includes(jobType)) {
     return res.status(400).json({ error: 'Invalid job type value' });
-  }
+}
 
   try {
     const db = await connectDB();
